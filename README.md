@@ -42,11 +42,11 @@ Social Media Video Downloader is a web-based application that allows users to do
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/social-media-video-downloader.git
+   git clone [https://github.com/username/social-media-video-downloader.git](https://github.com/vedant713/OneClick-Downloader-for-Social-Media.git)
    ```
 2. Navigate to the project directory:
    ```bash
-   cd social-media-video-downloader
+   cd OneClick-Downloader-for-Social-Media.git
    ```
 3. Install dependencies:
    ```bash
