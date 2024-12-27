@@ -1,0 +1,330 @@
+<html><head><base href="." />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Video Downloader</title>
+    <style>
+    :root {
+      --primary: #2196f3;
+      --dark: #1976d2;
+      --light: #bbdefb;
+      --text: #e0e0e0;
+      --bg: #0a0a1a;
+      --container-bg: rgba(14, 14, 30, 0.7);
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+    
+    @keyframes nebula {
+      0% { transform: rotate(0deg) scale(1); opacity: 0.5; }
+      50% { transform: rotate(180deg) scale(1.2); opacity: 0.7; }
+      100% { transform: rotate(360deg) scale(1); opacity: 0.5; }
+    }
+    
+    @keyframes shootingStar {
+      0% { transform: translateX(-100%) translateY(-100%); opacity: 1; }
+      50% { opacity: 1; }
+      100% { transform: translateX(200%) translateY(200%); opacity: 0; }
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Galaxy Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 160px 120px, #ddd, rgba(0,0,0,0)),
+        radial-gradient(circle at center, #131348 0%, #1a1a4a 30%, #0a0a2a 70%);
+      background-size: 200px 200px, 200px 200px, 200px 200px, 200px 200px, 200px 200px, 200px 200px, 100% 100%;
+      background-repeat: repeat, repeat, repeat, repeat, repeat, repeat, no-repeat;
+      animation: twinkle 5s infinite alternate;
+      z-index: -2;
+    }
+    
+    /* Nebula Effects */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 30% 40%, rgba(143, 0, 255, 0.2), transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(0, 183, 255, 0.2), transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.1), transparent 50%);
+      filter: blur(20px);
+      animation: nebula 30s infinite linear;
+      z-index: -1;
+    }
+    
+    /* Shooting Star */
+    .shooting-star {
+      position: fixed;
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, white, transparent);
+      animation: shootingStar 3s infinite linear;
+      opacity: 0;
+    }
+    
+    .shooting-star:nth-child(2) {
+      top: 30%;
+      left: 20%;
+      animation-delay: 1.5s;
+    }
+    
+    .shooting-star:nth-child(3) {
+      top: 60%;
+      left: 40%;
+      animation-delay: 2.5s;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--container-bg);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px rgba(33,150,243,0.3);
+    }
+    
+    .input-group {
+      margin-bottom: 20px;
+    }
+    
+    input[type="url"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid rgba(187,222,251,0.2);
+      border-radius: 5px;
+      font-size: 16px;
+      transition: all 0.3s;
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+    }
+    
+    input[type="url"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .platform-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    
+    .platform-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(187,222,251,0.1);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .platform-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 0 15px rgba(33,150,243,0.4);
+    }
+    
+    .platform-btn:hover {
+      background: var(--dark);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .download-btn {
+      width: 100%;
+      padding: 15px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(33,150,243,0.3);
+    }
+    
+    .download-btn:hover {
+      background: var(--dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(33,150,243,0.4);
+    }
+    
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      display: none;
+    }
+    
+    .result.success {
+      background: rgba(46,125,50,0.2);
+      color: #81c784;
+      display: block;
+      border: 1px solid rgba(129,199,132,0.3);
+    }
+    
+    .result.error {
+      background: rgba(198,40,40,0.2);
+      color: #ef5350;
+      display: block;
+      border: 1px solid rgba(239,83,80,0.3);
+    }
+    
+    .platform-icon {
+      width: 24px;
+      height: 24px;
+    }
+    </style>
+    </head>
+    <body>
+    <!-- Add shooting stars -->
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    
+    <div class="container">
+      <h1>Social Media Video Downloader</h1>
+      
+      <div class="platform-selector">
+        <button class="platform-btn" data-platform="youtube">
+          <svg class="platform-icon" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+          YouTube
+        </button>
+        
+        <button class="platform-btn" data-platform="instagram">
+          <svg class="platform-icon" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+          Instagram
+        </button>
+        
+        <button class="platform-btn" data-platform="reddit">
+          <svg class="platform-icon" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+          </svg>
+          Reddit
+        </button>
+      </div>
+      
+    
+      <div class="input-group">
+        <input type="url" id="videoUrl" placeholder="Paste video URL here...">
+      </div>
+    
+      <button class="download-btn" onclick="downloadVideo()">Download Video</button>
+    
+      <div id="result" class="result"></div>
+    </div>
+    
+    <script>
+      let currentPlatform = 'youtube'; // Default platform
+    
+      document.querySelectorAll('.platform-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          // Clear active class on all buttons
+          document.querySelectorAll('.platform-btn').forEach((b) => b.classList.remove('active'));
+          // Add active class to the clicked button
+          btn.classList.add('active');
+          // Update the current platform
+          currentPlatform = btn.dataset.platform;
+          // Clear the input field
+          document.querySelector('#videoUrl').value = '';
+          // Update the placeholder to indicate the selected platform
+          document.querySelector('#videoUrl').placeholder = `Paste ${currentPlatform} video URL here...`;
+        });
+      });
+    
+      async function downloadVideo() {
+  const url = document.querySelector('#videoUrl').value;
+  const result = document.querySelector('#result');
+
+  if (!url) {
+    result.textContent = 'Please enter a valid URL';
+    result.className = 'result error';
+    return;
+  }
+
+  result.textContent = 'Processing your request...';
+  result.className = 'result success';
+
+  try {
+    const response = await fetch('http://localhost:3000/download', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url, platform: currentPlatform }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to download video.');
+    }
+
+    const blob = await response.blob();
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = downloadUrl;
+    a.download = `${currentPlatform}_video.mp4`; // Default name
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    result.textContent = 'Download successful!';
+    result.className = 'result success';
+  } catch (error) {
+    result.textContent = `Error: ${error.message}`;
+    result.className = 'result error';
+  }
+}
+
+      // Add active class to YouTube button by default
+      document.querySelector('[data-platform="youtube"]').classList.add('active');
+    </script>
+    
+      
+    </body>
+    </html>
