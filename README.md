@@ -2,6 +2,7 @@
 # Social Media Video Downloader
 
 Social Media Video Downloader is a web-based application that allows users to download videos from popular social media platforms like YouTube, Instagram, and Reddit. It provides a simple and intuitive interface for users to select a platform, paste the video URL, and download videos directly to their devices.
+![image](https://github.com/user-attachments/assets/a7625520-82d6-4f48-a746-8ece625e6503)
 
 ## Features
 
